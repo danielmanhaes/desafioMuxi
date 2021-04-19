@@ -35,15 +35,20 @@ public class TerminalController {
         return terminalDto;
     }
 
-    @RequestMapping(value = "/{Ids}", method = RequestMethod.GET)
-    public Optional<TerminalDto> consult(@PathVariable @NotNull @DecimalMin("0") Long Ids){
-        Optional<TerminalDto> terminalDto = terminalService.consult(Ids);
+    @RequestMapping(value = "/{Id}", method = RequestMethod.GET)
+    public Optional<TerminalDto> consult(@PathVariable @NotNull @DecimalMin("0") Long Id){
+        Optional<TerminalDto> terminalDto = terminalService.consult(Id);
         return terminalDto;
     }
 
-//    @PutMapping(value = "/{Id}")
-//    public TerminalDto update(@PathVariable Integer id, @RequestBody TerminalDto terminalDto){
-//        return terminalSegrvice.update(terminalDto);
-//    }
+    @RequestMapping(value = "/{Id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TerminalDto update(@PathVariable @NotNull @DecimalMin("0") Long Id, @RequestBody TerminalDto terminalDto){
+        return terminalService.update(Id, terminalDto);
+    }
+
+    @RequestMapping(value = "terminal/{Id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TerminalDto updateTerminal(@PathVariable @NotNull @DecimalMin("0") Long Id, @RequestBody TerminalDto terminalDto){
+        return terminalService.update(Id, terminalDto);
+    }
 
 }

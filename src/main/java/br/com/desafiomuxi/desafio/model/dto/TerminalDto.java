@@ -76,7 +76,6 @@ public class TerminalDto {
                 .setMxr(mxr)
                 .setMxf(mxf)
                 .setVerfm(verfm);
-
         return terminal;
     }
 
