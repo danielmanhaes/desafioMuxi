@@ -11,7 +11,10 @@ import java.util.List;
 @Repository
 public interface TerminalRepository extends JpaRepository<Terminal, Long> {
 
-    @Query("select t from Terminal t where t.logic == %?1")
-    List<Terminal> findByFirstnameEndsWith(String firstname);
+    @Query("select t from Terminal t where t.logic = ?1")
+    Terminal findByLogic(Integer logic);
+
+    @Query("select t from Terminal t where t.logic = ?1 and t.version like %?2 ")
+    Terminal findByLogicAndVersion(Integer logic, String version);
 
 }

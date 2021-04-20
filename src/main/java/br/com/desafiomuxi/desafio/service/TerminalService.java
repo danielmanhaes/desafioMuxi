@@ -1,5 +1,6 @@
 package br.com.desafiomuxi.desafio.service;
 
+import br.com.desafiomuxi.desafio.Exception.NotFoundException;
 import br.com.desafiomuxi.desafio.model.dto.TerminalDto;
 import br.com.desafiomuxi.desafio.model.entity.Terminal;
 import br.com.desafiomuxi.desafio.repository.TerminalRepository;
@@ -12,10 +13,6 @@ import javax.validation.Validator;
 import java.util.Optional;
 import java.util.Set;
 
-/*
-Esta classe é responsabel pela parte de negocio
- */
-
 @Service
 public class TerminalService {
 
@@ -26,13 +23,13 @@ public class TerminalService {
     private TerminalRepository terminalRepository;
 
     public TerminalDto insert(TerminalDto terminalDto) throws Exception {
-
-        /* verifica se o objeto montado com as informaçoes da requisiçao esta preenchido corretamente */
+        Terminal terminal = null;
         Set<ConstraintViolation<TerminalDto>> violations = validator.validate(terminalDto);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
-        Terminal terminal = terminalDto.toEntity();
+
+        terminal = terminalDto.toEntity();
         terminal = terminalRepository.save(terminal);
         return terminal.toDto();
     }
@@ -43,54 +40,27 @@ public class TerminalService {
         return terminalDtoOptional;
     }
 
-//    public TerminalDto updateTerminal(Integer logic, TerminalDto terminalDto){
-//        return terminalRepository.
-//    }
+    public TerminalDto consultByLogic(Integer logic) throws NotFoundException {
+        Terminal terminal = terminalRepository.findByLogic(logic);
+        if(terminal == null){
+            throw new NotFoundException();
+        }
+        return terminal.toDto();
+    }
 
-    public TerminalDto update(Long Id, TerminalDto terminalDto){
-       return terminalRepository.findById(Id)
-                .map( terminal -> {
-//                     terminal.setLogic(terminalDto.getLogic());
-//                     terminal.setSerial(terminalDto.getSerial());
-//                     terminal.setVersion(terminalDto.getVersion());
-//                     terminal.setSam(terminalDto.getSam());
-//                     terminal.setPtid(terminalDto.getPtid());
-//                     terminal.setPlat(terminalDto.getPlat());
-//                     terminal.setMxr(terminalDto.getMxr());
-//                     terminal.setMxf(terminalDto.getMxf());
-//                     terminal.setVerfm(terminalDto.getVerfm());
-                     terminal = terminalDto.toEntity();
-                     terminal.setId(Id);
-                     terminalRepository.save(terminal);
-                     return terminal.toDto();
-                }).orElseGet( () -> {
+    public TerminalDto update(Long Id, TerminalDto terminalDto) {
+        return terminalRepository.findById(Id)
+                .map(terminal -> {
+                    terminal = terminalDto.toEntity();
+                    terminal.setId(Id);
+                    terminalRepository.save(terminal);
+                    return terminal.toDto();
+                }).orElseGet(() -> {
                     Terminal terminalEntity = terminalDto.toEntity();
                     terminalEntity.setId(Id);
                     terminalEntity = terminalRepository.save(terminalEntity);
-                   return terminalEntity.toDto();
-               });
+                    return terminalEntity.toDto();
+                });
     }
-
-//       .setLogic(logic)
-//                .setSerial(serial)
-//                .setModel(model)
-//                .setVersion(version)
-//                .setSam(sam)
-//                .setPtid(ptid)
-//                .setPlat(plat)
-//                .setMxr(mxr)
-//                .setMxf(mxf)
-//                .setVerfm(verfm);
-
-//     return repository.findById(id)
-//            .map(employee -> {
-//        employee.setName(newEmployee.getName());
-//        employee.setRole(newEmployee.getRole());
-//        return repository.save(employee);
-//    })
-//            .orElseGet(() -> {
-//        newEmployee.setId(id);
-//        return repository.save(newEmployee);
-//    });
 
 }

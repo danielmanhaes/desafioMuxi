@@ -3,10 +3,7 @@ package br.com.desafiomuxi.desafio.model.entity;
 import br.com.desafiomuxi.desafio.model.dto.*;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Optional;
 
 
@@ -17,7 +14,9 @@ public class Terminal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique=true)
     private Integer logic;
+
     private String serial;
     private String model;
     private String version;
