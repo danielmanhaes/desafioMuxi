@@ -48,7 +48,21 @@ public class TerminalService {
         return terminal.toDto();
     }
 
-    public TerminalDto update(Long Id, TerminalDto terminalDto) {
+    public TerminalDto update(Integer logic, TerminalDto terminalDto) {
+        Terminal terminal = terminalRepository.findByLogic(logic);
+        Long id = null;
+        if(terminal ==  null) {
+            terminal = terminalDto.toEntity();
+        }else{
+            id = terminal.getId();
+            terminal = terminalDto.toEntity();
+            terminal.setId(id);
+        }
+        terminalRepository.save(terminal);
+        return terminal.toDto();
+    }
+
+    public TerminalDto update2(Long Id, TerminalDto terminalDto) {
         return terminalRepository.findById(Id)
                 .map(terminal -> {
                     terminal = terminalDto.toEntity();

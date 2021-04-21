@@ -38,7 +38,7 @@ public class TerminalController {
     }
 
     @RequestMapping(value = "/terminal/{logic}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TerminalDto update(@PathVariable @NotNull @DecimalMin("0") Long logic, @RequestBody TerminalDto terminalDto){
+    public TerminalDto update(@PathVariable @NotNull @DecimalMin("0") Integer logic, @RequestBody TerminalDto terminalDto){
         return terminalService.update(logic, terminalDto);
     }
 
